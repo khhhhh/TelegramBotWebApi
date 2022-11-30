@@ -1,4 +1,5 @@
 ﻿using Telegram.Bot;
+using TelegramBotWebApi.Models;
 using TelegramBotWebApi.Services;
 
 namespace TelegramBotWebApi.Commands
@@ -24,19 +25,19 @@ namespace TelegramBotWebApi.Commands
 
             command = command.ToLower();
 
-            if (command.StartsWith("/dick"))
+            if (command.StartsWith($"/{Consts.DICK_COMMAND}"))
                 return new DickCommand(bot, dateService);
-            else if (command.StartsWith("/popa"))
+            else if (command.StartsWith($"/{Consts.POPA_COMMAND}"))
                 return new PopaCommand(bot);
-            else if (command.StartsWith("/sex"))
+            else if (command.StartsWith($"/{Consts.SEX_COMMAND}"))
                 return new SexCommand(bot, context);
-            else if (command.StartsWith("/loh"))
+            else if (command.StartsWith($"/{Consts.LOH_COMMAND}"))
                 return new LohCommand(bot, context);
-            else if (command.StartsWith("/truth"))
+            else if (command.StartsWith($"/{Consts.TRUTH_COMMAND}"))
                 return new TruthOrDareCommand(bot, "truth");
-            else if (command.StartsWith("/dare"))
+            else if (command.StartsWith($"/{Consts.DARE_COMMAND}"))
                 return new TruthOrDareCommand(bot, "dare");
-            else if (command.StartsWith("/nextbday"))
+            else if (command.StartsWith($"/{Consts.BIRTHDAY_COMMAND}"))
                 return new NextBDayCommand(bot, context);
             return null;
         }

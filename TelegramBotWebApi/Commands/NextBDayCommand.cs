@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
@@ -17,11 +18,12 @@ namespace TelegramBotWebApi.Commands
 
         public async Task ExecuteAsync(Update update)
         {
-            var userName = update.Message.Text.Split(' ').Last();
+            var words = update.Message.Text.Split(' ');
             var answer = "";
-            if(!string.IsNullOrWhiteSpace(userName))
+            CultureInfo ci = new CultureInfo("ru-RU");
+            if(words.Length > 1)
             {
-                userName = userName.Replace("@", "");
+                var userName = words.Last().Replace("@", "");
                 var birthday = context
                     .Birthdays
                     .Include(b => b.User)
@@ -30,7 +32,7 @@ namespace TelegramBotWebApi.Commands
                 if (birthday is null)
                     return;
 
-                answer = $"День рождения @{birthday.User.UserName} - {birthday.Date:M}";
+                answer = $"День рождения @{birthday.User.UserName} - {birthday.Date.ToString("M", ci)}";
             }    
             else
             {
@@ -43,7 +45,8 @@ namespace TelegramBotWebApi.Commands
                 if (birthday is null)
                     return;
 
-                answer = $"Следующий день рождения у @{birthday.User.UserName} - {birthday.Date:M}";
+                var name = birthday.User?.UserName ?? birthday.Name;
+                answer = $"Следующий день рождения у @{name} - {birthday.Date.ToString("M", ci)}";
             }
 
 
