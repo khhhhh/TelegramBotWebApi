@@ -36,8 +36,13 @@ namespace TelegramBotWebApi.Commands
             }    
             else
             {
+                var currentDate = DateTime.Now;
+                currentDate = DateTime.Parse($"2022-{currentDate.Month}-{currentDate.Day}");
+
+
                 var birthday = context
                     .Birthdays
+                    .Where(bday => bday.Date.DayOfYear >= currentDate.DayOfYear)
                     .Include(b => b.User)
                     .OrderBy(b => b.Date)
                     .FirstOrDefault();
@@ -45,8 +50,12 @@ namespace TelegramBotWebApi.Commands
                 if (birthday is null)
                     return;
 
+
                 var name = birthday.User?.UserName ?? birthday.Name;
-                answer = $"Следующий день рождения у @{name} - {birthday.Date.ToString("M", ci)}";
+                if (currentDate.DayOfYear == birthday.Date.DayOfYear)
+                    answer = $"С днем рождения, @{name}!";
+                else
+                    answer = $"Следующий день рождения у @{name} - {birthday.Date.ToString("M", ci)}";
             }
 
 
