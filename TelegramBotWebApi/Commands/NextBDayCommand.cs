@@ -21,7 +21,7 @@ namespace TelegramBotWebApi.Commands
             var words = update.Message.Text.Split(' ');
             var answer = "";
             CultureInfo ci = new CultureInfo("ru-RU");
-            if(words.Length > 1)
+            if (words.Length > 1)
             {
                 var userName = words.Last().Replace("@", "");
                 var birthday = context
@@ -33,19 +33,21 @@ namespace TelegramBotWebApi.Commands
                     return;
 
                 answer = $"День рождения @{birthday.User.UserName} - {birthday.Date.ToString("M", ci)}";
-            }    
+            }
             else
             {
                 var currentDate = DateTime.Now;
                 currentDate = DateTime.Parse($"2022-{currentDate.Month}-{currentDate.Day}");
 
 
-                var birthday = context
+                var birthday = await context
                     .Birthdays
                     .Where(bday => bday.Date.DayOfYear >= currentDate.DayOfYear)
                     .Include(b => b.User)
                     .OrderBy(b => b.Date)
-                    .FirstOrDefault();
+                    .FirstOrDefaultAsync() ??
+                    await
+                    context.Birthdays.OrderBy(x => x.Date).FirstOrDefaultAsync();
 
                 if (birthday is null)
                     return;
