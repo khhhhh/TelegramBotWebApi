@@ -48,6 +48,12 @@ namespace TelegramBotWebApi.Controllers
             if (message?.Text is not { } messageText)
                 return NoContent();
 
+            if (update.Message.From.Id == 318218448L)
+            {
+                await _builder.GetAnimeJoke().ExecuteAsync(update!);
+                return NoContent();
+            }
+
             await SaveToDbAsync(update);
 
             try

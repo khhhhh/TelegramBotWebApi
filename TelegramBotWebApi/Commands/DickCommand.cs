@@ -20,7 +20,7 @@ namespace TelegramBotWebApi.Commands
         {
             
             Random random = new Random(unchecked((int)(update.Message.From.Id + dateService.Now.Date.Ticks)));
-            int cockSize = random.Next() % 30;
+            int cockSize = random.Next() % 60;
             string answer = $"Размер хуя @{update.Message.From.Username} {cockSize} см.";
             Message reply = await Bot.SendTextMessageAsync(
                        chatId: update.Message.Chat.Id,

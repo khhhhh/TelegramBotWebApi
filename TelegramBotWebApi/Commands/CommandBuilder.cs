@@ -1,4 +1,5 @@
 ﻿using Telegram.Bot;
+using Telegram.Bot.Types;
 using TelegramBotWebApi.Models;
 using TelegramBotWebApi.Services;
 
@@ -15,6 +16,11 @@ namespace TelegramBotWebApi.Commands
             this.bot = bot;
             this.context = context;
             dateService = service;
+        }
+
+        public ICommandBase GetAnimeJoke()
+        {
+            return new AnimeCommand(bot);
         }
 
         public ICommandBase? GetCommandBase(string command)
